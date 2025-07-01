@@ -1,5 +1,7 @@
-let productsHTML = '';
+import { cart, addToCart } from "../data/cart.js";
+import { products } from "../data/products.js";
 
+let productsHTML = '';
 
 // Display the HTML for each product
 products.forEach((product) => {
@@ -57,8 +59,23 @@ products.forEach((product) => {
 // Insert the generated product HTML
 document.querySelector(".js-products-grid").innerHTML = productsHTML
 
+function updateCartQuantity() {
+  // Update cart quantity display
+    let cartQuantity = 0;
+
+    cart.forEach((cartItem) => {
+      cartQuantity += cartItem.quantity;
+    })
+
+    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+}
+
 // Used to track the timeout for the added popup
 let addedPopupTimeout = 0;
+
+function showPopup() {
+  
+}
 
 // Adds add to cart functionality to the site
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
@@ -69,43 +86,14 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     // Find the item quantity from the dropdown
     const itemQuantity = parseInt(document.querySelector(`.js-quantity-selector-${productId}`).value, 10);
 
-    // Add to Cart
-    if (cart.length === 0) {
-      cart.push({
-          productId: productId,
-          quantity: itemQuantity
-        });
-    } else {
-      let found = false
-      cart.forEach((item) => {
-        if (item.productId === productId) {
-          item.quantity+=itemQuantity;
-          found = true;
-        }
-      })
-      if (!found) {
-        cart.push({
-          productId: productId,
-          quantity: 1
-        });
-      }
-    }
+    addToCart(productId, itemQuantity);
+    updateCartQuantity();
 
-    // Update cart quantity display
-    let cartQuantity = 0;
-
-    cart.forEach((item) => {
-      cartQuantity += item.quantity;
-    })
-
-    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-
-    // Added message popup
+    // "Added" message popup
     const popup = document.querySelector(`.js-added-to-cart-${productId}`);
 
     popup.classList.add("added-to-cart-appear");
 
-    console.log(addedPopupTimeout);
     if (addedPopupTimeout !== 0) {
       clearTimeout(addedPopupTimeout);
     }
