@@ -41,7 +41,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -56,6 +56,9 @@ products.forEach((product) => {
 
 // Insert the generated product HTML
 document.querySelector(".js-products-grid").innerHTML = productsHTML
+
+// Used to track the timeout for the added popup
+let addedPopupTimeout = 0;
 
 // Adds add to cart functionality to the site
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
@@ -88,8 +91,8 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
       }
     }
 
-    // Update cart display
-    let cartQuantity = 0
+    // Update cart quantity display
+    let cartQuantity = 0;
 
     cart.forEach((item) => {
       cartQuantity += item.quantity;
@@ -97,6 +100,19 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
 
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
 
-    console.log(cart)
+    // Added message popup
+    const popup = document.querySelector(`.js-added-to-cart-${productId}`);
+
+    popup.classList.add("added-to-cart-appear");
+
+    console.log(addedPopupTimeout);
+    if (addedPopupTimeout !== 0) {
+      clearTimeout(addedPopupTimeout);
+    }
+    addedPopupTimeout = setTimeout(() => {
+      popup.classList.remove("added-to-cart-appear");
+      addedPopupTimeout = 0;
+    }, 2000);
+
   });
 })
