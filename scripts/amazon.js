@@ -1,5 +1,7 @@
 let productsHTML = '';
 
+
+// Display the HTML for each product
 products.forEach((product) => {
   const html = `<div class="product-container">
           <div class="product-image-container">
@@ -23,7 +25,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -52,22 +54,30 @@ products.forEach((product) => {
   productsHTML += html;
 });
 
+// Insert the generated product HTML
 document.querySelector(".js-products-grid").innerHTML = productsHTML
 
+// Adds add to cart functionality to the site
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
+  // Add on click event to each button
   button.addEventListener('click', () => {
     const productId = button.dataset.productId;
+    
+    // Find the item quantity from the dropdown
+    const itemQuantity = parseInt(document.querySelector(`.js-quantity-selector-${productId}`).value, 10);
+
+    // Add to Cart
     if (cart.length === 0) {
       cart.push({
           productId: productId,
-          quantity: 1
+          quantity: itemQuantity
         });
     } else {
       let found = false
       cart.forEach((item) => {
         if (item.productId === productId) {
-          item.quantity++
-          found = true
+          item.quantity+=itemQuantity;
+          found = true;
         }
       })
       if (!found) {
@@ -78,6 +88,7 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
       }
     }
 
+    // Update cart display
     let cartQuantity = 0
 
     cart.forEach((item) => {
@@ -85,6 +96,7 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     })
 
     document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
+
+    console.log(cart)
   });
 })
-
