@@ -664,6 +664,7 @@ export function getProduct(productId) {
   products.forEach((product) => {
     if (product.id === productId) {
       returnProduct = product;
+      return
     }
   })
   return returnProduct;

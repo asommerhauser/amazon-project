@@ -5,8 +5,10 @@ import { deleteFromCart } from "../data/cart.js";
 
 let orderHTML = '';
 
+console.log(cart);
+
 cart.forEach((cartItem) => {
-  const productId = cartItem.id;
+  const productId = cartItem.productId;
   const product = getProduct(productId);
 
   const html = `
