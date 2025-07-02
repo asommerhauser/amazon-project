@@ -1,11 +1,11 @@
-import { cart } from "../data/cart.js";
+import { cart, updateCartQuantity } from "../data/cart.js";
 import { getProduct } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import { deleteFromCart } from "../data/cart.js";
 
 let orderHTML = '';
 
-console.log(cart);
+updateCartQuantity();
 
 cart.forEach((cartItem) => {
   const productId = cartItem.productId;

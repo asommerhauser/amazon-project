@@ -27,6 +27,7 @@ export function addToCart(productId, itemQuantity) {
     }
   }
   saveToStorage();
+  updateCartQuantity();
 }
 
 export function deleteFromCart(productId) {
@@ -38,6 +39,28 @@ export function deleteFromCart(productId) {
     cur++;
   })
   saveToStorage();
+  updateCartQuantity();
+}
+
+export function updateCartQuantity() {
+  // Update cart quantity display
+    let cartQuantity = 0;
+
+    cart.forEach((cartItem) => {
+      cartQuantity += cartItem.quantity;
+    })
+
+    const queryHomePage = document.querySelector('.js-cart-quantity')
+    const queryCheckoutPage = document.querySelector('.js-checkout-item-count')
+    
+    if (queryHomePage) {
+      queryHomePage.innerHTML = cartQuantity;
+    }
+
+    if (queryCheckoutPage) {
+      queryCheckoutPage.innerHTML = `${cartQuantity} items`;
+    }
+    
 }
 
 function saveToStorage() {

@@ -1,8 +1,10 @@
-import { cart, addToCart } from "../data/cart.js";
+import { addToCart, updateCartQuantity } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 
 let productsHTML = '';
+
+updateCartQuantity();
 
 // Display the HTML for each product
 products.forEach((product) => {
@@ -60,18 +62,6 @@ products.forEach((product) => {
 // Insert the generated product HTML
   document.querySelector(".js-products-grid").innerHTML = productsHTML
 
-
-function updateCartQuantity() {
-  // Update cart quantity display
-    let cartQuantity = 0;
-
-    cart.forEach((cartItem) => {
-      cartQuantity += cartItem.quantity;
-    })
-
-    document.querySelector('.js-cart-quantity').innerHTML = cartQuantity;
-}
-
 // Used to track the timeout for the added popup
 let addedPopupTimeout = 0;
 
@@ -85,7 +75,6 @@ document.querySelectorAll('.js-add-to-cart').forEach((button) => {
     const itemQuantity = parseInt(document.querySelector(`.js-quantity-selector-${productId}`).value, 10);
 
     addToCart(productId, itemQuantity);
-    updateCartQuantity();
 
     // "Added" message popup
     const popup = document.querySelector(`.js-added-to-cart-${productId}`);
