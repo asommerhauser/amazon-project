@@ -57,7 +57,8 @@ products.forEach((product) => {
 });
 
 // Insert the generated product HTML
-document.querySelector(".js-products-grid").innerHTML = productsHTML
+  document.querySelector(".js-products-grid").innerHTML = productsHTML
+
 
 function updateCartQuantity() {
   // Update cart quantity display
@@ -72,10 +73,6 @@ function updateCartQuantity() {
 
 // Used to track the timeout for the added popup
 let addedPopupTimeout = 0;
-
-function showPopup() {
-  
-}
 
 // Adds add to cart functionality to the site
 document.querySelectorAll('.js-add-to-cart').forEach((button) => {
