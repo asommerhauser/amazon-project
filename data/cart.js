@@ -30,3 +30,13 @@ export function addToCart(productId, itemQuantity) {
     }
   }
 }
+
+export function deleteFromCart(productId) {
+  let cur = 0;
+  cart.forEach((cartItem) => {
+    if (cartItem.id === productId) {
+      cart.splice(cur, 1);
+    }
+    cur++;
+  })
+}
