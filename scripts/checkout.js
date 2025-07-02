@@ -1,4 +1,4 @@
-import { cart, updateCartQuantity } from "../data/cart.js";
+import { cart, updateCartQuantity, updateItemQuantity } from "../data/cart.js";
 import { getProduct } from "../data/products.js";
 import { formatCurrency } from "./utils/money.js";
 import { deleteFromCart } from "../data/cart.js";
@@ -32,7 +32,7 @@ cart.forEach((cartItem) => {
             <span>
               Quantity: <span class="quantity-label">${cartItem.quantity}</span>
             </span>
-            <span class="update-quantity-link link-primary">
+            <span class="update-quantity-link link-primary js-update-quantity-link" data-product-id="${product.id}">
               Update
             </span>
             <span class="delete-quantity-link link-primary js-delete-quantity-link" data-product-id="${product.id}">
@@ -91,7 +91,45 @@ cart.forEach((cartItem) => {
   orderHTML += html;
 })
 
-  document.querySelector('.js-order-summary').innerHTML = orderHTML;
+document.querySelector('.js-order-summary').innerHTML = orderHTML;
+
+document.querySelectorAll('.js-update-quantity-link').forEach((updateButton) => {
+  updateButton.addEventListener('click', () => {
+    const productId = updateButton.dataset.productId;
+
+    // Find the container for this cart item
+    const cartItemContainer = document.querySelector(`.js-cart-item-container-${productId}`);
+    const quantityLabel = cartItemContainer.querySelector('.quantity-label');
+
+    // Check if input already exists
+    const existingInput = cartItemContainer.querySelector('.js-update-quantity-input');
+
+    if (existingInput) {
+      // Already an input, treat as submit
+      const newQuantity = existingInput.value;
+      updateItemQuantity(productId, Number(newQuantity));
+
+      quantityLabel.textContent = newQuantity;
+      updateCartQuantity();
+    } else {
+      // Replace the label with an input
+      const currentQuantity = quantityLabel.textContent;
+      quantityLabel.innerHTML = `<input size="1" class="js-update-quantity-input" value="${currentQuantity}">`;
+
+      const input = cartItemContainer.querySelector('.js-update-quantity-input');
+      input.focus();
+
+      input.addEventListener("keyup", (e) => {
+        if (e.key === "Enter") {
+          const newQuantity = input.value;
+          updateItemQuantity(productId, Number(newQuantity));
+          quantityLabel.textContent = newQuantity;
+          updateCartQuantity();
+        }
+      });
+    }
+  });
+});
 
 // Initialize Delete Buttons
 document.querySelectorAll('.js-delete-quantity-link').forEach((deleteButton) => {

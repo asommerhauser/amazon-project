@@ -42,6 +42,15 @@ export function deleteFromCart(productId) {
   updateCartQuantity();
 }
 
+export function updateItemQuantity(productId, quantity) {
+  cart.forEach((cartItem) => {
+    if (cartItem.productId === productId) {
+      cartItem.quantity = quantity;
+    }
+  })
+  saveToStorage();
+}
+
 export function updateCartQuantity() {
   // Update cart quantity display
     let cartQuantity = 0;
