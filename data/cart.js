@@ -9,7 +9,8 @@ export function addToCart(productId, itemQuantity) {
   if (cart.length === 0) {
     cart.push({
         productId: productId,
-        quantity: itemQuantity
+        quantity: itemQuantity,
+        deliveryOptionId: '1'
       });
   } else {
     let found = false
@@ -22,7 +23,8 @@ export function addToCart(productId, itemQuantity) {
     if (!found) {
       cart.push({
         productId: productId,
-        quantity: 1
+        quantity: 1,
+        deliveryOptionId: '1'
       });
     }
   }
