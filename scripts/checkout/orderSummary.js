@@ -4,6 +4,7 @@ import { formatCurrency } from "../utils/money.js";
 import { deleteFromCart } from "../../data/cart.js";
 import dayjs from 'https://unpkg.com/supersimpledev@8.5.0/dayjs/esm/index.js';
 import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
 
 export function renderOrderSummary() {
   let orderHTML = '';
@@ -85,6 +86,7 @@ export function renderOrderSummary() {
 
         quantityLabel.textContent = newQuantity;
         updateCartQuantity();
+        renderPaymentSummary();
       } else {
         // Replace the label with an input
         const currentQuantity = quantityLabel.textContent;
@@ -99,6 +101,7 @@ export function renderOrderSummary() {
             updateItemQuantity(productId, Number(newQuantity));
             quantityLabel.textContent = newQuantity;
             updateCartQuantity();
+            renderPaymentSummary();
           }
         });
       }
@@ -154,6 +157,7 @@ export function renderOrderSummary() {
       document.querySelector(
         `.js-cart-item-container-${deleteButton.dataset.productId}`
       ).remove();
+      renderPaymentSummary();
     })
   })
 
